@@ -27,8 +27,7 @@ const Hero = () => {
     video.currentTime = 0
 
     const setup = () => {
-      // Ensure we have a valid duration to avoid NaN breaking the scroll height
-      const duration = Number.isFinite(video.duration) && video.duration > 0 ? video.duration : 10
+      const duration = video.duration
       const scrollLen = Math.min(
         Math.max(duration * 150, window.innerHeight * 3),
         window.innerHeight * 8
@@ -42,10 +41,8 @@ const Hero = () => {
         end     : `+=${scrollLen}`,
         scrub   : true,
         onUpdate: (self) => {
-          if (video.readyState >= 1) {
-            const t = Math.min(self.progress * duration, duration - 0.01)
-            if (isFinite(t)) video.currentTime = t
-          }
+          const t = Math.min(self.progress * duration, duration - 0.01)
+          if (isFinite(t)) video.currentTime = t
         },
       })
 
@@ -98,24 +95,10 @@ const Hero = () => {
         0.80)
     }
 
-    // A play/pause trick ensures the browser decodes the first frame and fires loadeddata
-    const initVideo = async () => {
-      try {
-        await video.play()
-        video.pause()
-        video.currentTime = 0
-      } catch (e) {
-        // Autoplay may be blocked, but we can still scrub
-      }
+    if (video.readyState >= 1) {
       setup()
-    }
-
-    if (video.readyState >= 2) {
-      initVideo()
     } else {
-      video.addEventListener('loadeddata', initVideo, { once: true })
-      // Fallback if loadeddata doesn't fire
-      video.addEventListener('canplay', initVideo, { once: true })
+      video.addEventListener('loadedmetadata', setup, { once: true })
     }
 
     return () => ScrollTrigger.getAll().forEach(t => t.kill())
