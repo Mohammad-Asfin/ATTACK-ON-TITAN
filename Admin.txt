@@ -1,0 +1,2 @@
+In Admin file we had data which is regarded to admin
+-> Admin has access has to add (or) remove any user
