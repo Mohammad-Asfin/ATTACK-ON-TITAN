@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from 'react'
-import './Titansize.css'
+import './TitanSize.css'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 

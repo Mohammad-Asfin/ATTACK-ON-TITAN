@@ -1,0 +1,10 @@
+Get the user data...
+process the data...
+
+create an avatar for user...
+
+Then Update in DB
+
+Sample Testing is Done!
+
+Still there is Pending
